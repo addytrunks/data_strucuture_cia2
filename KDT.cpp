@@ -48,7 +48,7 @@ int main()
 
   while(1)
   {
-    printf("\n\nEnter\n1. insert\n2. Delete\n3. Search\n4. Exit:\n5. print in 2D ");
+    printf("\n\nEnter\n1. Insert\n2. Delete\n3. Search\n4. Print in 2D:\n5.Exit  ");
     scanf("%d",&choice);
     switch(choice)
     {
@@ -75,15 +75,15 @@ int main()
       t.search(&temparr[0],dim);
       break;
     case 4:
-      printf("BREAk");
-      exit(0);
-      break;
-    case 5:
-      printf("printing in 2D:\n");
+      printf("Printing in 2D:\n");
       t.print2D(dim);
       break;
+    case 5:
+      printf("Exiting the program...");
+      exit(0);
+      break;
     default:
-      printf("Enter a valid Value");
+      printf("Enter a valid choice.");
     }
   }
 }
