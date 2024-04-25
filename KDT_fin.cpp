@@ -119,8 +119,6 @@ private:
         if (root == NULL)
             return NULL;
 
-        int cd = depth % dim;
-
         if (root->left == NULL)
             return root->data;
 
