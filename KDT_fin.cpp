@@ -224,7 +224,7 @@ private:
         for (int i = COUNT; i < space; i++)
             printf(" ");
         for (int i = 0; i < dim; i++)
-            printf("%d ", root->data[i]);
+            printf("[%d] ", root->data[i]);
 
         // Process left child
         print2DUtil(root->left, space, dim);
