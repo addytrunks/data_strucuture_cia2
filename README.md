@@ -2,7 +2,7 @@
 
 ## Overview
 
-Welcome to the Data Structures repository! This repository contains implementations of various data structures commonly used in computer science and programming.
+Welcome to the Data Structures repository! This repository contains implementations of B Tree and KD Tree data structures in C++.
 
 ## Table of Contents
 
