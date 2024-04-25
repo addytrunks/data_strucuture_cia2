@@ -1,17 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <limits.h>
+#include <cfloat>
 #include <algorithm> // for std::min
-#include <iostream>  // for std::cin and std::cout
-#include <string>    // for std::string and std::getline
-#include <sstream>   // for std::istringstream
 
 #define COUNT 10
 
 // Node structure
 struct Node
 {
-    int *data;          // Array to store data (coordinates)
+    double *data;       // Array to store data (coordinates)
     struct Node *left;  // Pointer to the left child
     struct Node *right; // Pointer to the right child
 };
@@ -22,7 +21,7 @@ private:
     struct Node *root; // Pointer to the root of the tree
 
     // Helper function to create a new node
-    struct Node *createNode(int *data, int dim)
+    struct Node *createNode(double *data, int dim)
     {
         // Allocate memory for a new node
         struct Node *newNode = (struct Node *)malloc(sizeof(struct Node));
@@ -32,7 +31,7 @@ private:
             exit(1);
         }
         // Allocate memory for data array in the node and copy data
-        newNode->data = (int *)malloc(dim * sizeof(int));
+        newNode->data = (double *)malloc(dim * sizeof(double));
         if (newNode->data == NULL)
         {
             printf("Memory allocation failed.");
@@ -46,7 +45,7 @@ private:
     }
 
     // Helper function to insert a node recursively
-    struct Node *insertHelperFunction(struct Node *root, int *data, int dim, int depth)
+    struct Node *insertHelperFunction(struct Node *root, double *data, int dim, int depth)
     {
         // If the current node is NULL, create a new node and return
         if (root == NULL)
@@ -65,7 +64,7 @@ private:
     }
 
     // Helper function to compare two arrays
-    bool compareArrays(int *arr1, int *arr2, int dim)
+    bool compareArrays(double *arr1, double *arr2, int dim)
     {
         for (int i = 0; i < dim; ++i)
         {
@@ -82,11 +81,11 @@ private:
     }
 
     // Helper function to find the minimum value in a dimension recursively
-    int minValue(struct Node *root, int depth, int dim, int axis)
+    double minValue(struct Node *root, int depth, int dim, int axis)
     {
         // If the current node is NULL, return the maximum possible value
         if (root == NULL)
-            return INT_MAX;
+            return DBL_MAX;
 
         // Calculate the axis to compare based on the depth
         int cd = depth % dim;
@@ -106,7 +105,7 @@ private:
     }
 
     // Helper function to find the maximum value in the left subtree recursively
-    int *findMaxLeftData(struct Node *root, int dim, int depth)
+    double *findMaxLeftData(struct Node *root, int dim, int depth)
     {
         if (root->right == NULL)
             return root->data;
@@ -114,10 +113,12 @@ private:
     }
 
     // Helper function to find the minimum value in the right subtree recursively
-    int *findMinRightData(Node *root, int dim, int depth)
+    double *findMinRightData(Node *root, int dim, int depth)
     {
         if (root == NULL)
             return NULL;
+
+        int cd = depth % dim;
 
         if (root->left == NULL)
             return root->data;
@@ -126,7 +127,7 @@ private:
     }
 
     // Utility function to delete a node recursively
-    struct Node *deleteNodeUtil(Node *root, int *data, int dim, int depth)
+    struct Node *deleteNodeUtil(Node *root, double *data, int dim, int depth)
     {
         if (root == NULL)
             return NULL;
@@ -162,7 +163,7 @@ private:
             else
             {
                 // Find the minimum value in the right subtree
-                int *minRightData = findMinRightData(root->right, dim, depth + 1);
+                double *minRightData = findMinRightData(root->right, dim, depth + 1);
                 // Replace the root's data with the minimum value
                 for (int i = 0; i < dim; ++i)
                     root->data[i] = minRightData[i];
@@ -183,7 +184,7 @@ private:
     }
 
     // Helper function to search for a node recursively
-    bool searchUtil(struct Node *root, int *data, int dim, int depth)
+    bool searchUtil(struct Node *root, double *data, int dim, int depth)
     {
         // If the current node is NULL, return false
         if (root == NULL)
@@ -205,6 +206,7 @@ private:
     }
 
     // Helper function to print the tree in 2D recursively
+    // Helper function to print the tree in 2D recursively
     void print2DUtil(struct Node *root, int space, int dim)
     {
         // Base case
@@ -221,9 +223,10 @@ private:
         printf("\n");
         for (int i = COUNT; i < space; i++)
             printf(" ");
+        printf("(");
         for (int i = 0; i < dim; i++)
-            printf("[%d] ", root->data[i]);
-
+            printf("%.2lf ", root->data[i]);
+        printf(")\n");
         // Process left child
         print2DUtil(root->left, space, dim);
     }
@@ -241,14 +244,13 @@ public:
     }
 
     // Function to insert a node
-    void insert(int *data, int dim)
+    void insert(double *data, int dim)
     {
         root = insertHelperFunction(root, data, dim, 0);
     }
 
     // Function to delete a node
-    void deleteNode(int *data, int dim)
-
+    void deleteNode(double *data, int dim)
     {
         if (root == NULL)
         {
@@ -257,13 +259,12 @@ public:
         }
         else
         {
-
             root = deleteNodeUtil(root, data, dim, 0);
         }
     }
 
     // Function to search for a node
-    bool search(int *data, int dim)
+    bool search(double *data, int dim)
     {
         return searchUtil(root, data, dim, 0);
     }
@@ -278,7 +279,6 @@ public:
         }
         else
         {
-
             print2DUtil(root, 0, dim);
         }
     }
@@ -287,18 +287,18 @@ public:
 // Main function
 int main()
 {
-    int temparr[COUNT];
+    double temparr[COUNT];
     int choice;
     int dim;
     Tree t;
-    printf("Enter 'k' for k-dimension tree. (basically the dimension): ");
+    printf("Enter 'k' for k-dimension tree (basically the dimension): ");
     scanf("%d", &dim);
     bool found;
 
     // Menu-driven loop
     while (1)
     {
-        printf("\n\nEnter\n1. Insert\n2. Delete\n3. Search\n4. Display Tree\n5.Exit\nEnter your choice:");
+        printf("\n\nEnter\n1. Insert\n2. Delete\n3. Search\n4. Display Tree\n5. Exit\nEnter your choice: ");
         scanf("%d", &choice);
         switch (choice)
         {
@@ -306,14 +306,15 @@ int main()
             printf("\nEnter %d number elements for one node to be inserted: \n", dim);
             for (int i = 0; i < dim; i++)
             {
-                while (scanf("%d", &temparr[i]) != 1)
+                // Validate input to ensure it's a number
+                while (scanf("%lf", &temparr[i]) != 1)
                 {
-                    printf("Invalid input. Please enter an integer value.\n");
+                    printf("Invalid input. Please enter a number.\n");
                     scanf("%*s"); // Clear input buffer
                 }
             }
             t.insert(&temparr[0], dim);
-            printf("\nSuccesfully entered the %d-dimensional array.", dim);
+            printf("\nSuccessfully entered the %d-dimensional array.", dim);
             break;
         case 2:
             if (t.getRoot() == NULL)
@@ -323,12 +324,12 @@ int main()
             }
             else
             {
-                printf("\nEnter the element you want to be deleted (must be in %d dimensions):\n ", dim);
+                printf("\nEnter the element you want to be deleted (must be in %d dimensions): ", dim);
                 for (int i = 0; i < dim; i++)
                 {
-                    while (scanf("%d", &temparr[i]) != 1)
+                    while (scanf("%lf", &temparr[i]) != 1)
                     {
-                        printf("Invalid input. Please enter an integer value.\n");
+                        printf("Invalid input. Please enter a number.\n");
                         scanf("%*s"); // Clear input buffer
                     }
                 }
@@ -336,12 +337,12 @@ int main()
             }
             break;
         case 3:
-            printf("Enter the elements that have %d-dimensions you want to search for...", dim);
+            printf("Enter the elements that have %d-dimensions you want to search for: ", dim);
             for (int i = 0; i < dim; i++)
             {
-                while (scanf("%d", &temparr[i]) != 1)
+                while (scanf("%lf", &temparr[i]) != 1)
                 {
-                    printf("Invalid input. Please enter an integer value.\n");
+                    printf("Invalid input. Please enter a number.\n");
                     scanf("%*s"); // Clear input buffer
                 }
             }
