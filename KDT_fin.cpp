@@ -207,27 +207,30 @@ private:
     }
 
     // Helper function to print the tree in 2D recursively
-    // Helper function to print the tree in 2D recursively
     void print2DUtil(struct Node *root, int space, int dim)
     {
-        // Base case
+        // If the current node is NULL, return
         if (root == NULL)
             return;
 
-        // Increase spacing
+        // Increase indentation for each level
         space += COUNT;
 
-        // Process right child first
+        // Process the right subtree
         print2DUtil(root->right, space, dim);
 
-        // Print current node after space
+        // Print the current node's data with proper indentation
         printf("\n");
         for (int i = COUNT; i < space; i++)
-            printf(" ");
+            printf("--");
+        printf(">");
+        printf("[");
         for (int i = 0; i < dim; i++)
-            printf("%d ", root->data[i]);
+            printf(" %d ", root->data[i]);
+        printf("]");
+        printf("\n");
 
-        // Process left child
+        // Process the left subtree
         print2DUtil(root->left, space, dim);
     }
 
