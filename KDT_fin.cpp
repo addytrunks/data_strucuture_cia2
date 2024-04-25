@@ -237,6 +237,11 @@ public:
         root = NULL;
     }
 
+    struct Node *getRoot()
+    {
+        return root;
+    }
+
     // Function to insert a node
     void insert(int *data, int dim)
     {
@@ -308,10 +313,18 @@ int main()
             printf("\nSuccesfully entered the %d-dimensional array.", dim);
             break;
         case 2:
-            printf("\nEnter the element you want to be deleted (must be in %d dimensions):\n ", dim);
-            for (int i = 0; i < dim; i++)
-                scanf("%d", &temparr[i]);
-            t.deleteNode(temparr, dim);
+            if (t.getRoot() == NULL)
+            {
+                printf("Tree is empty. Nothing to delete.");
+                break;
+            }
+            else
+            {
+                printf("\nEnter the element you want to be deleted (must be in %d dimensions):\n ", dim);
+                for (int i = 0; i < dim; i++)
+                    scanf("%d", &temparr[i]);
+                t.deleteNode(temparr, dim);
+            }
             break;
         case 3:
             printf("Enter the elements that have %d-dimensions you want to search for...", dim);
