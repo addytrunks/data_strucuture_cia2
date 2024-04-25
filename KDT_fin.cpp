@@ -245,8 +245,18 @@ public:
 
     // Function to delete a node
     void deleteNode(int *data, int dim)
+
     {
-        root = deleteNodeUtil(root, data, dim, 0);
+        if (root == NULL)
+        {
+            printf("Tree is empty. Cannot delete anything.");
+            return;
+        }
+        else
+        {
+
+            root = deleteNodeUtil(root, data, dim, 0);
+        }
     }
 
     // Function to search for a node
