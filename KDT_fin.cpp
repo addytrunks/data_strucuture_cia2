@@ -268,7 +268,16 @@ public:
     // Function to display the tree in 2D
     void displayTree(int dim)
     {
-        print2DUtil(root, 0, dim);
+        if (root == NULL)
+        {
+            printf("Tree is empty. Nothing to display.");
+            return;
+        }
+        else
+        {
+
+            print2DUtil(root, 0, dim);
+        }
     }
 };
 
