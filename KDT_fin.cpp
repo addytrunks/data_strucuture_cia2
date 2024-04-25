@@ -1,9 +1,10 @@
-// Program to implement KD-Tree
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
 #include <algorithm> // for std::min
+#include <iostream>  // for std::cin and std::cout
+#include <string>    // for std::string and std::getline
+#include <sstream>   // for std::istringstream
 
 #define COUNT 10
 
@@ -206,27 +207,27 @@ private:
     }
 
     // Helper function to print the tree in 2D recursively
+    // Helper function to print the tree in 2D recursively
     void print2DUtil(struct Node *root, int space, int dim)
     {
-        // If the current node is NULL, return
+        // Base case
         if (root == NULL)
             return;
 
-        // Increase indentation for each level
+        // Increase spacing
         space += COUNT;
 
-        // Process the right subtree
+        // Process right child first
         print2DUtil(root->right, space, dim);
 
-        // Print the current node's data with proper indentation
+        // Print current node after space
         printf("\n");
         for (int i = COUNT; i < space; i++)
             printf(" ");
         for (int i = 0; i < dim; i++)
             printf("%d ", root->data[i]);
-        printf("\n");
 
-        // Process the left subtree
+        // Process left child
         print2DUtil(root->left, space, dim);
     }
 
@@ -289,7 +290,6 @@ public:
 // Main function
 int main()
 {
-    int num;
     int temparr[COUNT];
     int choice;
     int dim;
@@ -308,7 +308,13 @@ int main()
         case 1:
             printf("\nEnter %d number elements for one node to be inserted: \n", dim);
             for (int i = 0; i < dim; i++)
-                scanf("%d", &temparr[i]);
+            {
+                while (scanf("%d", &temparr[i]) != 1)
+                {
+                    printf("Invalid input. Please enter an integer value.\n");
+                    scanf("%*s"); // Clear input buffer
+                }
+            }
             t.insert(&temparr[0], dim);
             printf("\nSuccesfully entered the %d-dimensional array.", dim);
             break;
@@ -322,14 +328,26 @@ int main()
             {
                 printf("\nEnter the element you want to be deleted (must be in %d dimensions):\n ", dim);
                 for (int i = 0; i < dim; i++)
-                    scanf("%d", &temparr[i]);
+                {
+                    while (scanf("%d", &temparr[i]) != 1)
+                    {
+                        printf("Invalid input. Please enter an integer value.\n");
+                        scanf("%*s"); // Clear input buffer
+                    }
+                }
                 t.deleteNode(temparr, dim);
             }
             break;
         case 3:
             printf("Enter the elements that have %d-dimensions you want to search for...", dim);
             for (int i = 0; i < dim; i++)
-                scanf("%d", &temparr[i]);
+            {
+                while (scanf("%d", &temparr[i]) != 1)
+                {
+                    printf("Invalid input. Please enter an integer value.\n");
+                    scanf("%*s"); // Clear input buffer
+                }
+            }
             found = t.search(&temparr[0], dim);
             if (found)
                 printf("Element found!\n");
