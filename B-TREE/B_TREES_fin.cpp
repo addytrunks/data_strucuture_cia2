@@ -1,3 +1,5 @@
+// Program to implement B-Trees
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -398,6 +400,10 @@ int main()
             int searchKey;
             printf("Enter key to search: ");
             scanf("%d", &searchKey);
+            if (root == NULL)
+            {
+                printf("B-Tree is empty. Nothing to search.\n");
+            }
             if (tree.search(root, searchKey))
             {
                 printf("Key %d found in the B-Tree\n", searchKey);
