@@ -90,10 +90,10 @@ private:
             return DBL_MAX;
 
         // Calculate the axis to compare based on the depth
-        int cd = depth % dim;
+        int axis = depth % dim;
 
         // If the current axis matches the target axis, find the minimum value
-        if (cd == axis)
+        if (axis == axis)
         {
             if (root->left == NULL)
                 return root->data[axis];
@@ -120,7 +120,7 @@ private:
         if (root == NULL)
             return NULL;
 
-        int cd = depth % dim;
+        int axis = depth % dim;
 
         if (root->left == NULL)
             return root->data;
@@ -134,7 +134,7 @@ private:
         if (root == NULL)
             return NULL;
 
-        int cd = depth % dim;
+        int axis = depth % dim;
 
         if (compareArrays(root->data, data, dim))
         {
@@ -173,7 +173,7 @@ private:
                 root->right = deleteNodeUtil(root->right, minRightData, dim, depth + 1);
             }
         }
-        else if (data[cd] < root->data[cd])
+        else if (data[axis] < root->data[axis])
         {
             root->left = deleteNodeUtil(root->left, data, dim, depth + 1);
         }
