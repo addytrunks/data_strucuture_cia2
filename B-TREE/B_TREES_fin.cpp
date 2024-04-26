@@ -3,14 +3,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-class node
+class BTree
 {
 
 private:
     // Function to split the child y of node x
-    void splitchild(node *x, int i, node *y, int t)
+    void splitchild(BTree *x, int i, BTree *y, int t)
     {
-        node *z = new node(y->t, y->leaf, t);
+        BTree *z = new BTree(y->t, y->leaf, t);
         z->nokeys = t - 1;
 
         for (int j = 0; j < t - 1; j++)
@@ -37,7 +37,7 @@ private:
     }
 
     // Function to insert key into btree
-    void insertnew(node *x, int k, int t)
+    void insertnew(BTree *x, int k, int t)
     {
         int i = x->nokeys - 1;
 
@@ -70,7 +70,7 @@ private:
     }
 
     // Function to delete a key from the B-tree
-    void deleteKey(node *root, int key)
+    void deleteKey(BTree *root, int key)
     {
         if (!root)
             return;
@@ -92,8 +92,8 @@ private:
             else
             {
                 // Case 2: The key is in an internal node
-                node *pred = root->child[index];
-                node *succ = root->child[index + 1];
+                BTree *pred = root->child[index];
+                BTree *succ = root->child[index + 1];
 
                 // Case 2a: The predecessor has at least t keys
                 if (pred->nokeys >= t)
@@ -120,7 +120,7 @@ private:
         else
         {
             // If the key is not present in this node, find the child node that would contain the key
-            node *child = root->child[index];
+            BTree *child = root->child[index];
             if (!child)
             {
                 printf("Key %d does not exist in the B-tree\n", key);
@@ -150,10 +150,10 @@ private:
     }
 
     // Function to borrow a key from the left sibling
-    void borrowFromLeft(node *parent, int index)
+    void borrowFromLeft(BTree *parent, int index)
     {
-        node *child = parent->child[index];
-        node *sibling = parent->child[index - 1];
+        BTree *child = parent->child[index];
+        BTree *sibling = parent->child[index - 1];
 
         // Shift all keys in child to the right
         for (int i = child->nokeys - 1; i >= 0; --i)
@@ -182,10 +182,10 @@ private:
     }
 
     // Function to borrow a key from the right sibling
-    void borrowFromRight(node *parent, int index)
+    void borrowFromRight(BTree *parent, int index)
     {
-        node *child = parent->child[index];
-        node *sibling = parent->child[index + 1];
+        BTree *child = parent->child[index];
+        BTree *sibling = parent->child[index + 1];
 
         // Move the key from the parent to the child
         child->keys[child->nokeys] = parent->keys[index];
@@ -214,10 +214,10 @@ private:
     }
 
     // Function to merge two nodes along with their parent
-    void mergeNodes(node *parent, int index)
+    void mergeNodes(BTree *parent, int index)
     {
-        node *child = parent->child[index];
-        node *sibling = parent->child[index + 1];
+        BTree *child = parent->child[index];
+        BTree *sibling = parent->child[index + 1];
 
         // Move the key from the parent to the child
         child->keys[t - 1] = parent->keys[index];
@@ -249,7 +249,7 @@ private:
     }
 
     // Function to find the predecessor of a node
-    int getPred(node *root)
+    int getPred(BTree *root)
     {
         while (!root->leaf)
             root = root->child[root->nokeys];
@@ -258,7 +258,7 @@ private:
     }
 
     // Function to find the successor of a node
-    int getSucc(node *root)
+    int getSucc(BTree *root)
     {
         while (!root->leaf)
             root = root->child[0];
@@ -269,15 +269,15 @@ private:
 public:
     int *keys;
     int t;
-    node **child;
+    BTree **child;
     int nokeys;
     bool leaf;
 
-    node(int temp, bool isleaf, int degree)
+    BTree(int temp, bool isleaf, int degree)
     {
         t = degree; // Initialize 't' with the passed value
         keys = new int[2 * t - 1];
-        child = new node *[2 * t];
+        child = new BTree *[2 * t];
         nokeys = 0;
         leaf = isleaf;
 
@@ -289,11 +289,11 @@ public:
     }
 
     // Method to insert node into btree
-    void insert(node **root, int key, int t)
+    void insert(BTree **root, int key, int t)
     {
         if (*root == nullptr)
         {
-            *root = new node(t, true, t);
+            *root = new BTree(t, true, t);
             (*root)->keys[0] = key;
             (*root)->nokeys = 1;
         }
@@ -301,7 +301,7 @@ public:
         {
             if ((*root)->nokeys == 2 * t - 1)
             {
-                node *newRoot = new node(t, false, t);
+                BTree *newRoot = new BTree(t, false, t);
                 newRoot->child[0] = *root;
                 splitchild(newRoot, 0, *root, t);
 
@@ -320,7 +320,7 @@ public:
     }
 
     // Method to search for a node in btree
-    bool search(node *root, int key)
+    bool search(BTree *root, int key)
     {
         if (root == nullptr)
             return false;
@@ -339,7 +339,7 @@ public:
     }
 
     // Method to display a B-tree
-    void display(node *root, int level = 0)
+    void display(BTree *root, int level = 0)
     {
         if (root == nullptr)
             return;
@@ -359,12 +359,12 @@ public:
     }
 
     // Method to delete a key from the B-tree
-    void deleteOperation(node *root, int key)
+    void deleteOperation(BTree *root, int key)
     {
         deleteKey(root, key);
     }
 
-    bool isEmpty(node *root)
+    bool isEmpty(BTree *root)
     {
         return root == nullptr;
     }
@@ -377,8 +377,8 @@ int main()
     // CHILDREN = 2 * t (Maximum number of children a node can have)
     printf("\nKEYS = 2 * m - 1\nCHILDREN = 2 * m\nEnter value of minimum degree(m):");
     scanf("%d", &t);
-    node tree(t, true, t);
-    node *root = NULL;
+    BTree tree(t, true, t);
+    BTree *root = NULL;
     while (1)
     {
         printf("\n1.Insert\n2.Delete\n3.Search\n4.Display\n5.Exit\nEnter your choice:");
