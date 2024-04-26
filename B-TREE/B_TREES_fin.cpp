@@ -322,6 +322,9 @@ public:
     // Method to search for a node in btree
     bool search(node *root, int key)
     {
+        if (root == nullptr)
+            return false;
+
         int i = 0;
         while (i < root->nokeys && key > root->keys[i])
             i++;
@@ -360,6 +363,11 @@ public:
     {
         deleteKey(root, key);
     }
+
+    bool isEmpty(node *root)
+    {
+        return root == nullptr;
+    }
 };
 
 int main()
@@ -374,12 +382,20 @@ int main()
     while (1)
     {
         printf("\n1.Insert\n2.Delete\n3.Search\n4.Display\n5.Exit\nEnter your choice:");
-        scanf("%d", &choice);
+        while (scanf("%d", &choice) != 1)
+        {
+            printf("Invalid input. Please enter a number.\n");
+            scanf("%*s"); // Clear input buffer
+        }
         switch (choice)
         {
         case 1:
-            printf("Enter value to enter into node:");
-            scanf("%d", &u);
+            printf("Enter value (ONLY INTEGER) to enter into node:");
+            while (scanf("%d", &u) != 1)
+            {
+                printf("Invalid input. Please enter a number.\n");
+                scanf("%*s"); // Clear input buffer
+            }
             tree.insert(&root, u, t);
             printf("Key %d inserted successfully.\n", u);
             break;
@@ -391,20 +407,44 @@ int main()
             else
             {
                 printf("Enter value to delete from node:");
-                scanf("%d", &u);
-                tree.deleteOperation(root, u);
-                printf("Key %d deleted successfully.\n", u);
+                while (scanf("%d", &u) != 1)
+                {
+                    printf("Invalid input. Please enter a number.\n");
+                    scanf("%*s"); // Clear input buffer
+                }
+                bool is_found;
+                is_found = tree.search(root, u);
+
+                if (!is_found)
+                {
+                    printf("Key %d not found in the B-Tree\n", u);
+                    break;
+                }
+                else
+                {
+                    tree.deleteOperation(root, u);
+                    printf("Key %d deleted successfully.\n", u);
+                }
             }
             break;
         case 3:
             int searchKey;
-            printf("Enter key to search: ");
-            scanf("%d", &searchKey);
+
             if (root == NULL)
             {
                 printf("B-Tree is empty. Nothing to search.\n");
+                break;
             }
-            if (tree.search(root, searchKey))
+
+            printf("Enter key (ONLY INTEGER) to search: ");
+            while (scanf("%d", &searchKey) != 1)
+            {
+                printf("Invalid input. Please enter a number.\n");
+                scanf("%*s"); // Clear input buffer
+            }
+            bool is_found;
+            is_found = tree.search(root, searchKey);
+            if (is_found)
             {
                 printf("Key %d found in the B-Tree\n", searchKey);
             }
@@ -414,15 +454,8 @@ int main()
             }
             break;
         case 4:
-            if (root == NULL)
-            {
-                printf("B-Tree is empty. Nothing to display.\n");
-            }
-            else
-            {
-                printf("B-Tree is as follows:\n");
-                tree.display(root);
-            }
+            printf("B-Tree is as follows:\n");
+            tree.display(root);
             break;
         case 5:
             exit(0);
