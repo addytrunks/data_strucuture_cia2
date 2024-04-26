@@ -197,10 +197,10 @@ private:
             return true;
 
         // Calculate the axis to compare based on the depth
-        int cd = depth % dim;
+        int axis = depth % dim;
 
         // Recursively search in the left subtree if data is less than root's data
-        if (data[cd] < root->data[cd])
+        if (data[axis] < root->data[axis])
             return searchUtil(root->left, data, dim, depth + 1);
 
         // Recursively search in the right subtree if data is greater than or equal to root's data
