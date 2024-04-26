@@ -1,3 +1,5 @@
+// Program to implement a k-dimension tree (k-d tree)
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -298,7 +300,11 @@ int main()
     while (1)
     {
         printf("\n\nEnter\n1. Insert\n2. Delete\n3. Search\n4. Display Tree\n5. Exit\nEnter your choice: ");
-        scanf("%d", &choice);
+        while (scanf("%d", &choice) != 1)
+        {
+            printf("Invalid input. Please enter a number.\n");
+            scanf("%*s"); // Clear input buffer
+        }
         switch (choice)
         {
         case 1:
@@ -369,6 +375,7 @@ int main()
             break;
         default:
             printf("Enter a valid choice.");
+            break;
         }
     }
     return 0;
