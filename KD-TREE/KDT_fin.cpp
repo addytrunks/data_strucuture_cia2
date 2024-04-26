@@ -206,7 +206,6 @@ private:
     }
 
     // Helper function to print the tree in 2D recursively
-    // Helper function to print the tree in 2D recursively
     void print2DUtil(struct Node *root, int space, int dim)
     {
         // Base case
@@ -333,7 +332,15 @@ int main()
                         scanf("%*s"); // Clear input buffer
                     }
                 }
-                t.deleteNode(temparr, dim);
+                if (t.search(&temparr[0], dim))
+                {
+                    t.deleteNode(&temparr[0], dim);
+                    printf("Element deleted successfully.");
+                }
+                else
+                {
+                    printf("Element not found in the tree. Cannot delete.");
+                }
             }
             break;
         case 3:
