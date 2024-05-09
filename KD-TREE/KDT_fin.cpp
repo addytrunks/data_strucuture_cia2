@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <limits.h>
 #include <cfloat>
 #include <algorithm> // for std::min
