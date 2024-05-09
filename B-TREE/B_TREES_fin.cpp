@@ -299,6 +299,7 @@ public:
         }
         else
         {
+            // If the keys of the root are full, then the median key is pushed up and the root is split.
             if ((*root)->nokeys == 2 * t - 1)
             {
                 BTree *newRoot = new BTree(t, false, t);
