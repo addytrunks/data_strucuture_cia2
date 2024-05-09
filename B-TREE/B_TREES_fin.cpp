@@ -8,6 +8,9 @@ class BTree
 
 private:
     // Function to split the child y of node x
+    // x = parent node
+    // i = index of child y in the parent node
+    // y = child node to be split
     void splitchild(BTree *x, int i, BTree *y, int t)
     {
         BTree *z = new BTree(y->t, y->leaf, t);
@@ -43,12 +46,14 @@ private:
 
         if (x->leaf)
         {
+            // // Find the correct position to insert the new key
             while (i >= 0 && k < x->keys[i])
             {
                 x->keys[i + 1] = x->keys[i];
                 i--;
             }
 
+            // Insert the new key into the appropriate position
             x->keys[i + 1] = k;
             x->nokeys = x->nokeys + 1;
         }
@@ -57,6 +62,7 @@ private:
             while (i >= 0 && k < x->keys[i])
                 i--;
 
+            // If the child node is full, split it
             if (x->child[i + 1]->nokeys == 2 * t - 1)
             {
                 splitchild(x, i + 1, x->child[i + 1], t);
