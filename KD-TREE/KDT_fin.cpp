@@ -105,15 +105,7 @@ private:
                                                    minValue(root->right, depth + 1, dim, axis)));
     }
 
-    // Helper function to find the maximum value in the left subtree recursively
-    double *findMaxLeftData(struct Node *root, int dim, int depth)
-    {
-        if (root->right == NULL)
-            return root->data;
-        return findMaxLeftData(root->right, dim, depth + 1);
-    }
-
-    // Helper function to find the minimum value in the right subtree recursively
+    // Helper function to find the minimum value in the right subtree recursively (inorder successor)
     double *findMinRightData(Node *root, int dim, int depth)
     {
         if (root == NULL)
