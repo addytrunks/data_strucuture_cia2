@@ -83,7 +83,7 @@ private:
     }
 
     // Helper function to find the minimum value in a dimension recursively
-    double minValue(struct Node *root, int depth, int dim, int axis)
+    double minValue(struct Node *root, int depth, int dim, int curr_axis)
     {
         // If the current node is NULL, return the maximum possible value
         if (root == NULL)
@@ -93,7 +93,7 @@ private:
         int axis = depth % dim;
 
         // If the current axis matches the target axis, find the minimum value
-        if (axis == axis)
+        if (axis == curr_axis)
         {
             if (root->left == NULL)
                 return root->data[axis];
