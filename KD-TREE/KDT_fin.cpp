@@ -2,9 +2,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <limits.h>
-#include <cfloat>
-#include <algorithm> // for std::min
 
 #define COUNT 10
 
@@ -79,30 +76,6 @@ private:
     bool isLeaf(struct Node *node)
     {
         return (node->left == NULL && node->right == NULL);
-    }
-
-    // Helper function to find the minimum value in a dimension recursively
-    double minValue(struct Node *root, int depth, int dim, int curr_axis)
-    {
-        // If the current node is NULL, return the maximum possible value
-        if (root == NULL)
-            return DBL_MAX;
-
-        // Calculate the axis to compare based on the depth
-        int axis = depth % dim;
-
-        // If the current axis matches the target axis, find the minimum value
-        if (axis == curr_axis)
-        {
-            if (root->left == NULL)
-                return root->data[axis];
-            return std::min(root->data[axis], std::min(minValue(root->left, depth + 1, dim, axis),
-                                                       minValue(root->right, depth + 1, dim, axis)));
-        }
-
-        // Recursively search in the left and right subtrees
-        return std::min(root->data[axis], std::min(minValue(root->left, depth + 1, dim, axis),
-                                                   minValue(root->right, depth + 1, dim, axis)));
     }
 
     // Helper function to find the minimum value in the right subtree recursively (inorder successor)
